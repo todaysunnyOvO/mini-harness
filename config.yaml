@@ -1,0 +1,79 @@
+provider:
+  base_url: https://api.deepseek.com
+  model: deepseek-v4-pro
+  api_key_env: MINI_HARNESS_API_KEY
+  timeout_seconds: 120
+  max_attempts: 3
+  retry_backoff_seconds: 0.5
+
+agent:
+  max_iterations: 8
+  workspace_root: .
+  system_prompt: >-
+      You are the assistant running inside Mini Harness.
+      Do not claim to be Claude, ChatGPT, DeepSeek, or any specific model.
+      If asked about the underlying model, say that the active model is determined
+      by the Harness provider configuration.
+
+profile:
+  id: default
+
+context:
+  enabled: true
+  max_input_tokens: 64000
+  reserved_output_tokens: 4000
+  approximate_chars_per_token: 4.0
+  max_tool_result_tokens: 2000
+  recent_tool_tail_tokens: 12000
+  min_recent_turns: 1
+  compaction_target_ratio: 0.8
+
+compression:
+  enabled: true
+  threshold_ratio: 0.75
+  target_ratio: 0.20
+  protect_first_turns: 1
+  tail_tokens: 12000
+  max_output_tokens: 2000
+  summary_model: ""
+  abort_on_summary_failure: true
+  cooldown_seconds: 600
+  lock_ttl_seconds: 120
+  min_savings_ratio: 0.10
+  anti_thrashing_limit: 2
+  in_place: true
+
+memory:
+  enabled: true
+  root_path: .mini-harness/profiles
+  max_user_chars: 4000
+  max_memory_chars: 8000
+  lock_timeout_seconds: 5
+
+skills:
+  enabled: true
+  profile_root_path: .mini-harness/profiles
+  external_dirs: []
+  bundled_dir: skills
+  optional_dir: optional-skills
+  enabled_optional: []
+  max_skill_chars: 40000
+  max_index_description_chars: 240
+
+tools:
+  auto_repair_names: true
+  enable_write_file: true
+  max_result_chars: 12000
+  name_repair_threshold: 0.84
+  same_call_limit: 2
+  max_calls_per_batch: 6
+  max_calls_per_turn: 16
+  timeout_seconds: 30
+
+storage:
+  enabled: true
+  database_path: .mini-harness/sessions.db
+
+observability:
+  enabled: true
+  event_log_path: .mini-harness/events.jsonl

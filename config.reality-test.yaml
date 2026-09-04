@@ -1,0 +1,78 @@
+provider:
+  base_url: https://api.deepseek.com
+  model: deepseek-v4-pro
+  api_key_env: MINI_HARNESS_API_KEY
+  timeout_seconds: 120
+  max_attempts: 2
+  retry_backoff_seconds: 1
+
+agent:
+  max_iterations: 8
+  workspace_root: tmp/reality-test/workspace
+  system_prompt: >-
+    You are the assistant running inside a Mini Harness reality test.
+    Follow explicit tool-use instructions exactly. Report errors honestly.
+
+profile:
+  id: reality-test
+
+context:
+  enabled: true
+  max_input_tokens: 6000
+  reserved_output_tokens: 800
+  approximate_chars_per_token: 4.0
+  max_tool_result_tokens: 500
+  recent_tool_tail_tokens: 1200
+  min_recent_turns: 1
+  compaction_target_ratio: 0.70
+
+compression:
+  enabled: false
+  threshold_ratio: 0.75
+  target_ratio: 0.20
+  protect_first_turns: 1
+  tail_tokens: 1200
+  max_output_tokens: 500
+  summary_model: ""
+  abort_on_summary_failure: true
+  cooldown_seconds: 60
+  lock_ttl_seconds: 120
+  min_savings_ratio: 0.10
+  anti_thrashing_limit: 2
+  in_place: true
+
+memory:
+  enabled: true
+  root_path: tmp/reality-test/memory
+  max_user_chars: 4000
+  max_memory_chars: 8000
+  lock_timeout_seconds: 5
+  stale_lock_seconds: 60
+
+skills:
+  enabled: true
+  profile_root_path: tmp/reality-test/profiles
+  external_dirs: []
+  bundled_dir: skills
+  optional_dir: optional-skills
+  enabled_optional: []
+  max_skill_chars: 40000
+  max_index_description_chars: 240
+
+tools:
+  auto_repair_names: true
+  enable_write_file: true
+  max_result_chars: 3000
+  name_repair_threshold: 0.84
+  same_call_limit: 2
+  max_calls_per_batch: 6
+  max_calls_per_turn: 16
+  timeout_seconds: 10
+
+storage:
+  enabled: true
+  database_path: tmp/reality-test/sessions.db
+
+observability:
+  enabled: true
+  event_log_path: tmp/reality-test/events.jsonl
